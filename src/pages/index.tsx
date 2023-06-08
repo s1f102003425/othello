@@ -14,14 +14,32 @@ const Home = () => {
     [0, 0, 0, 0, 0, 0, 0, 0],
   ]);
   const onClick = (x: number, y: number) => {
-    console.log(x, y);
-    const newBoard: number[][] = JSON.parse(JSON.stringify(board));
-    if (board[y + 1] !== undefined && board[y + 1][x] === 3 - turnColor) {
-      newBoard[y][x] = turnColor;
-      setTurnColor(3 - turnColor);
+    if (board[y][x] === 0 && board[y + 1][x] === 3 - turnColor) {
+      console.log(x, y);
+      const newBoard: number[][] = JSON.parse(JSON.stringify(board));
+      for (let i = 1; i < 8; i++) {
+        if (board[y + i] === undefined) {
+          break;
+        } else if (board[y + i][x] === 0) {
+          break;
+        } else if (board[y + i][x] === 3 - turnColor) {
+          continue;
+        } else if (board[y + i][x] === turnColor) {
+          for (; i > -1; i--) {
+            newBoard[y + i][x] = turnColor;
+            setBoard(newBoard);
+          }
+          setTurnColor(3 - turnColor);
+          break;
+        }
+      }
     }
-    setBoard(newBoard);
+    //if (board[y + 1] !== undefined && board[y + 1][x] !== 0 && board[y + 1][x] !== turnColor) {
+    //newBoard[y][x] = turnColor;
+    //setTurnColor(3 - turnColor);
   };
+  //setBoard(newBoard);
+
   return (
     <div className={styles.container}>
       <div className={styles.board}>
@@ -41,5 +59,4 @@ const Home = () => {
     </div>
   );
 };
-
 export default Home;
