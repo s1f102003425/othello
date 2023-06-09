@@ -54,31 +54,7 @@ const Home = () => {
       setBoard(newBoard);
       setTurnColor(3 - turnColor);
     }
-    /*if (board[y][x] === 0 && board[y + 1][x] === 3 - turnColor) {
-      console.log(x, y);
-      const newBoard: number[][] = JSON.parse(JSON.stringify(board));
-      for (let i = 1; i < 8; i++) {
-        if (board[y + i] === undefined) {
-          break;
-        } else if (board[y + i][x] === 0) {
-          break;
-        } else if (board[y + i][x] === 3 - turnColor) {
-          continue;
-        } else if (board[y + i][x] === turnColor) {
-          for (; i > -1; i--) {
-            newBoard[y + i][x] = turnColor;
-            setBoard(newBoard);
-          }
-          setTurnColor(3 - turnColor);
-          break;
-        }
-      }
-    }*/
-    //if (board[y + 1] !== undefined && board[y + 1][x] !== 0 && board[y + 1][x] !== turnColor) {
-    //newBoard[y][x] = turnColor;
-    //setTurnColor(3 - turnColor);
   };
-  //setBoard(newBoard);
 
   return (
     <div className={styles.container}>
@@ -86,6 +62,9 @@ const Home = () => {
         {board.map((row, y) =>
           row.map((color, x) => (
             <div className={styles.cell} key={`${x}-${y}`} onClick={() => onClick(x, y)}>
+              {color === 3 && (
+                <div className={styles.candidate} style={{ background: '#ffcd00' }} />
+              )}
               {color !== 0 && (
                 <div
                   className={styles.stone}
