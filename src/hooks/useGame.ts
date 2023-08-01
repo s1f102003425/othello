@@ -23,7 +23,6 @@ export const useGame = () => {
   ];
   const onClick = (x: number, y: number) => {
     const newBoard: number[][] = JSON.parse(JSON.stringify(board));
-    let ok = false;
     for (const direction of directions) {
       if (
         board[y + direction[1]] !== undefined &&
@@ -43,16 +42,13 @@ export const useGame = () => {
             for (let j = i; j > 0; j--) {
               newBoard[y + j * direction[1]][x + j * direction[0]] = turnColor;
             }
-            ok = true;
+            newBoard[y][x] = turnColor;
+            setBoard(newBoard);
+            setTurnColor(3 - turnColor);
             break;
           }
         }
       }
-    }
-    if (ok) {
-      newBoard[y][x] = turnColor;
-      setBoard(newBoard);
-      setTurnColor(3 - turnColor);
     }
   };
   return { board, onClick, turnColor };
