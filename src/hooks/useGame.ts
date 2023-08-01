@@ -25,15 +25,17 @@ export const useGame = () => {
     const newBoard: number[][] = JSON.parse(JSON.stringify(board));
     let ok = false;
     for (const direction of directions) {
-      if (board[y + direction[1]] === undefined) {
-        continue;
-      }
-      if (board[y][x] === 0 && board[y + direction[1]][x + direction[0]] === 3 - turnColor) {
+      if (
+        board[y + direction[1]] !== undefined &&
+        board[y][x] === 0 &&
+        board[y + direction[1]][x + direction[0]] === 3 - turnColor
+      ) {
         console.log(x, y);
         for (let i = 1; i < 8; i++) {
-          if (board[y + i * direction[1]][x + i * direction[0]] === undefined) {
-            break;
-          } else if (board[y + i * direction[1]][x + i * direction[0]] === 0) {
+          if (
+            board[y + i * direction[1]][x + i * direction[0]] === undefined ||
+            board[y + i * direction[1]][x + i * direction[0]] === 0
+          ) {
             break;
           } else if (board[y + i * direction[1]][x + i * direction[0]] === 3 - turnColor) {
             continue;
