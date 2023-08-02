@@ -32,6 +32,7 @@ export const useGame = () => {
         console.log(x, y);
         for (let i = 1; i < 8; i++) {
           if (
+            board[y + i * direction[1]] === undefined ||
             board[y + i * direction[1]][x + i * direction[0]] === undefined ||
             board[y + i * direction[1]][x + i * direction[0]] === 0
           ) {
@@ -51,5 +52,6 @@ export const useGame = () => {
       }
     }
   };
+  // const checkLineStone = (x: number, y: number, direction: number[]) => {};
   return { board, onClick, turnColor };
 };
