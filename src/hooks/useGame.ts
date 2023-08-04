@@ -22,47 +22,72 @@ export const useGame = () => {
     [-1, 1],
   ];
   const onClick = (x: number, y: number) => {
-    const newBoard: number[][] = JSON.parse(JSON.stringify(board));
-    for (const direction of directions) {
-      if (
-        board[y + direction[1]] !== undefined &&
-        board[y][x] < 1 &&
-        board[y + direction[1]][x + direction[0]] === 3 - turnColor
-      ) {
-        console.log(x, y);
-        for (let i = 1; i < 8; i++) {
-          if (
-            board[y + i * direction[1]] === undefined ||
-            board[y + i * direction[1]][x + i * direction[0]] === undefined ||
-            board[y + i * direction[1]][x + i * direction[0]] === 0
-          ) {
-            break;
-          } else if (board[y + i * direction[1]][x + i * direction[0]] === 3 - turnColor) {
-            continue;
-          } else if (board[y + i * direction[1]][x + i * direction[0]] === turnColor) {
-            for (let j = i; j > 0; j--) {
-              newBoard[y + j * direction[1]][x + j * direction[0]] = turnColor;
-            }
-            newBoard[y][x] = turnColor;
-            setBoard(newBoard);
-            setTurnColor(3 - turnColor);
-            break;
-          }
-        }
-      }
-    }
-  };
-  // 候補地作りの方針:候補地は-1として、読み込みのたびにまず、-1を0に直す仕組みで行く
-  // const checkCandidate = ()
-  const candidateReset = (candidateBoard: [][]) => {
     let newBoard: number[][] = JSON.parse(JSON.stringify(board));
     newBoard = board.map((row) => {
       return row.map((col) => {
         return col === -1 ? 0 : col;
       });
     });
+    for (const direction of directions) {
+      if (
+        newBoard[y + direction[1]] !== undefined &&
+        newBoard[y][x] === 0 &&
+        newBoard[y + direction[1]][x + direction[0]] === 3 - turnColor
+      ) {
+        console.log(x, y);
+        for (let i = 1; i < 8; i++) {
+          if (
+            newBoard[y + i * direction[1]] === undefined ||
+            newBoard[y + i * direction[1]][x + i * direction[0]] === undefined ||
+            newBoard[y + i * direction[1]][x + i * direction[0]] === 0
+          ) {
+            break;
+          } else if (newBoard[y + i * direction[1]][x + i * direction[0]] === 3 - turnColor) {
+            continue;
+          } else if (newBoard[y + i * direction[1]][x + i * direction[0]] === turnColor) {
+            for (let j = i; j > 0; j--) {
+              newBoard[y + j * direction[1]][x + j * direction[0]] = turnColor;
+            }
+            newBoard[y][x] = turnColor;
+            setTurnColor(3 - turnColor);
+            break;
+          }
+        }
+      }
+    }
+    //  候補地を出す
+    for (let subX = 0; subX < 8; subX++) {
+      for (let subY = 0; subY < 8; subY++) {
+        for (const direction of directions) {
+          if (
+            newBoard[subY + direction[1]] !== undefined &&
+            newBoard[subY][subX] === 0 &&
+            newBoard[subY + direction[1]][subX + direction[0]] === turnColor
+          ) {
+            for (let i = 1; i < 8; i++) {
+              if (
+                newBoard[subY + i * direction[1]] === undefined ||
+                newBoard[subY + i * direction[1]][subX + i * direction[0]] === undefined ||
+                newBoard[subY + i * direction[1]][subX + i * direction[0]] === 0
+              ) {
+                break;
+              } else if (newBoard[subY + i * direction[1]][subX + i * direction[0]] === turnColor) {
+                continue;
+              } else if (
+                newBoard[subY + i * direction[1]][subX + i * direction[0]] ===
+                3 - turnColor
+              ) {
+                newBoard[subY][subX] = -1;
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
+    console.table(newBoard);
     setBoard(newBoard);
   };
-  // const checkLineStone = (x: number, y: number, direction: number[]) => {};
+
   return { board, onClick, turnColor };
 };
