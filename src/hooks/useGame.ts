@@ -26,7 +26,7 @@ export const useGame = () => {
     for (const direction of directions) {
       if (
         board[y + direction[1]] !== undefined &&
-        board[y][x] === 0 &&
+        board[y][x] < 1 &&
         board[y + direction[1]][x + direction[0]] === 3 - turnColor
       ) {
         console.log(x, y);
@@ -51,6 +51,15 @@ export const useGame = () => {
         }
       }
     }
+  };
+  // 候補地作りの方針:候補地は-1として、読み込みのたびにまず、-1を0に直す仕組みで行く
+  // const checkCandidate = ()
+  const candidateReset = (candidateBoard: [][]) => {
+    const newBoard = board.map((row) => {
+      return row.map((col) => {
+        return col === -1 ? (col = 0) : null;
+      });
+    });
   };
   // const checkLineStone = (x: number, y: number, direction: number[]) => {};
   return { board, onClick, turnColor };
