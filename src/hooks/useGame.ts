@@ -55,11 +55,13 @@ export const useGame = () => {
   // 候補地作りの方針:候補地は-1として、読み込みのたびにまず、-1を0に直す仕組みで行く
   // const checkCandidate = ()
   const candidateReset = (candidateBoard: [][]) => {
-    const newBoard = board.map((row) => {
+    let newBoard: number[][] = JSON.parse(JSON.stringify(board));
+    newBoard = board.map((row) => {
       return row.map((col) => {
-        return col === -1 ? (col = 0) : null;
+        return col === -1 ? 0 : col;
       });
     });
+    setBoard(newBoard);
   };
   // const checkLineStone = (x: number, y: number, direction: number[]) => {};
   return { board, onClick, turnColor };
