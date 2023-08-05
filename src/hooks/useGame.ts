@@ -48,13 +48,14 @@ export const useGame = () => {
             for (let j = i; j > 0; j--) {
               newBoard[y + j * direction[1]][x + j * direction[0]] = turnColor;
             }
-            newBoard[y][x] = turnColor;
+
             setTurnColor(3 - turnColor);
             break;
           }
         }
       }
     }
+    newBoard[y][x] = turnColor;
     //  候補地を出す
     for (let subX = 0; subX < 8; subX++) {
       for (let subY = 0; subY < 8; subY++) {
