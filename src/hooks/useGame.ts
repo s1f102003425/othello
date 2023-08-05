@@ -23,15 +23,17 @@ export const useGame = () => {
   ];
   const onClick = (x: number, y: number) => {
     let newBoard: number[][] = JSON.parse(JSON.stringify(board));
-    newBoard = board.map((row) => {
-      return row.map((col) => {
-        return col === -1 ? 0 : col;
+    if (board[y][x] === -1) {
+      newBoard = board.map((row) => {
+        return row.map((col) => {
+          return col === -1 ? 0 : col;
+        });
       });
-    });
+    }
     for (const direction of directions) {
       if (
         // newBoard[y + direction[1]] !== undefined &&
-        board[y][x] < 1
+        board[y][x] === -1
         // newBoard[y + direction[1]][x + direction[0]] === 3 - turnColor
       ) {
         console.log(x, y);
@@ -54,9 +56,17 @@ export const useGame = () => {
         }
       }
     }
-
+    let candidateCount = 0;
+    if (board[y][x] === -1) {
+      candidateCount = makeCandidate(newBoard, turnColor, candidateCount);
+    }
+    if (candidateCount === 0) {
+      makeCandidate(newBoard, 3 - turnColor, candidateCount);
+    } else {
+      setTurnColor(3 - turnColor);
+    }
     //  候補地を出す
-    makeCandidate(newBoard,turnColor);
+
     // let candidateCount = 0;
     // for (let subX = 0; subX < 8; subX++) {
     //   for (let subY = 0; subY < 8; subY++) {
@@ -88,11 +98,15 @@ export const useGame = () => {
     //     }
     //   }
     // }
-    console.table(newBoard);
+
     setBoard(newBoard);
   };
-  const makeCandidate = (candidateBoard: number[][],turnPlayerColor:number) => {
-    let candidateCount = 0;
+  const makeCandidate = (
+    candidateBoard: number[][],
+    turnPlayerColor: number,
+    candidateCount: number
+  ) => {
+    candidateCount = 0;
     for (let subX = 0; subX < 8; subX++) {
       for (let subY = 0; subY < 8; subY++) {
         for (const direction of directions) {
@@ -125,9 +139,7 @@ export const useGame = () => {
         }
       }
     }
-    if (candidateCount !== 0) {
-      setTurnColor(3 - turnColor);
-    }
+    return candidateCount;
   };
 
   return { board, onClick, turnColor };
