@@ -5,8 +5,8 @@ export const useGame = () => {
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 2, 0, 0, 0],
     [0, 0, 0, 2, 1, 0, 0, 0],
+    [0, 0, 0, 1, 2, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
@@ -48,8 +48,6 @@ export const useGame = () => {
             for (let j = i; j > 0; j--) {
               newBoard[y + j * direction[1]][x + j * direction[0]] = turnColor;
             }
-
-            setTurnColor(3 - turnColor);
             break;
           }
         }
@@ -57,6 +55,7 @@ export const useGame = () => {
     }
     newBoard[y][x] = turnColor;
     //  候補地を出す
+    let candidateCount = 0;
     for (let subX = 0; subX < 8; subX++) {
       for (let subY = 0; subY < 8; subY++) {
         for (const direction of directions) {
@@ -79,6 +78,7 @@ export const useGame = () => {
                 3 - turnColor
               ) {
                 newBoard[subY][subX] = -1;
+                candidateCount++;
                 break;
               }
             }
@@ -88,6 +88,9 @@ export const useGame = () => {
     }
     console.table(newBoard);
     setBoard(newBoard);
+    if (candidateCount !== 0) {
+      setTurnColor(3 - turnColor);
+    }
   };
 
   return { board, onClick, turnColor };
