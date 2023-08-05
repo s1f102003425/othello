@@ -39,7 +39,7 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-non-null-assertion': 'error',
     // complexity: ['error', 5],
-    // 'max-depth': ['error', 1],// とりあえず3をめざす
+    // 'max-depth': ['error', 3], // 初期設定は1
     // 'max-nested-callbacks': ['error', 3],
     // 'max-lines': ['error', 200],
   },
